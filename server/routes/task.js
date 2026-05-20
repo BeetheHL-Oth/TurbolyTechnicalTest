@@ -1,14 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const taskController = require('../controllers/taskController');
+const auth = require('../middlewares/auth');
+const authZ = require('../middlewares/authZ');
 
-router.get('/', taskController.findAll);
-router.get('/:id', taskController.findById);
+router.use(auth);
+
+router.get('/', taskController.get);
+router.get('/:id', authZ, taskController.getById);
 router.post('/', taskController.create);
-router.put('/:id', taskController.update);
-router.delete('/:id', taskController.delete);
+router.put('/:id', authZ, taskController.update);
+router.delete('/:id', authZ, taskController.delete);
+router.patch('/:id', authZ, taskController.markDone);
 
-// router-level error handler (pass-through to global middleware)
 const errorHandler = require('../middlewares/errorHandler');
 router.use(errorHandler);
 
