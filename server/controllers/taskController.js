@@ -18,13 +18,17 @@ class TasksController {
       }
 
       let order;
+      // Always sort incomplete tasks first (completed=false) then completed tasks
+      // followed by the requested secondary sort (due or priority).
       if (sortBy === 'due' || sortBy === 'duedate') {
         order = [
+          ['completed', 'ASC'],
           ['due', 'ASC'],
           ['priority', 'ASC'],
         ];
       } else {
         order = [
+          ['completed', 'ASC'],
           ['priority', 'ASC'],
           ['due', 'ASC'],
         ];

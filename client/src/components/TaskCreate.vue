@@ -8,6 +8,7 @@ const emit = defineEmits(['back-to-dashboard', 'task-created', 'logout'])
 
 const creating = ref(false)
 const formError = ref('')
+const apiUrl = process.env.APPURL
 const taskForm = ref({
   task: '',
   description: '',
@@ -42,7 +43,7 @@ const createTask = async () => {
 
   try {
     await axios.post(
-      'http://localhost:3000/tasks',
+      `${apiUrl}/tasks`,
       {
         task: taskForm.value.task,
         description: taskForm.value.description,
