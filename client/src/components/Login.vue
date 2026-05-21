@@ -6,6 +6,7 @@ import { showError, showSuccess } from '../utils/alerts'
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
+const apiUrl = process.env.APPURL
 
 const emit = defineEmits(['switch-to-register', 'login-success'])
 
@@ -13,7 +14,7 @@ const handleLogin = async () => {
   loading.value = true
   
   try {
-    const response = await axios.post('http://localhost:3000/login', {
+    const response = await axios.post(`${apiUrl}/login`, {
       email: email.value,
       password: password.value
     })
