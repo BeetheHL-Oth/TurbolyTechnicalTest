@@ -13,6 +13,7 @@ const editingTaskId = ref(null)
 const formError = ref('')
 const searchQuery = ref('')
 const sortMode = ref('priority')
+const apiUrl = process.env.APPURL
 
 const editForm = ref({
   task: '',
@@ -94,7 +95,7 @@ const fetchTasks = async ({ showDueAlert = false } = {}) => {
   loading.value = true
 
   try {
-    const response = await axios.get('http://localhost:3000/tasks', {
+    const response = await axios.get(`${apiUrl}/tasks`, {
       headers: authHeaders(),
       params: {
         search: searchQuery.value || undefined,
@@ -138,7 +139,7 @@ const saveTask = async () => {
 
   try {
     await axios.put(
-      `http://localhost:3000/tasks/${editingTaskId.value}`,
+      `${apiUrl}/tasks/${editingTaskId.value}`,
       {
         task: editForm.value.task,
         description: editForm.value.description,
@@ -164,7 +165,7 @@ const deleteTask = async (taskId) => {
   if (!confirmed) return
 
   try {
-    await axios.delete(`http://localhost:3000/tasks/${taskId}`, { headers: authHeaders() })
+    await axios.delete(`${apiUrl}/tasks/${taskId}`, { headers: authHeaders() })
     await showSuccess('Task deleted', 'The task was removed from the list.')
     await fetchTasks()
   } catch (err) {
@@ -174,7 +175,7 @@ const deleteTask = async (taskId) => {
 
 const markDone = async (taskId) => {
   try {
-    await axios.patch(`http://localhost:3000/tasks/${taskId}`, null, { headers: authHeaders() })
+    await axios.patch(`${apiUrl}/tasks/${taskId}`, null, { headers: authHeaders() })
     await showSuccess('Task completed', 'The task was marked as done.')
     await fetchTasks()
   } catch (err) {
